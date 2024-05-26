@@ -32,20 +32,20 @@
   - Port 22 (SSH): Open to 0.0.0.0/0 (anywhere)
 - Rename these instances to Web-Server1 and Web-Server2.
 
-## Configuration
+## Configuration of Servers
 
 ### Prometheus Server Installation and Configuration
 
 - SSH to Prometheus server
 - Clone git repo: `git clone https://github.com/EngineerChris/prometheus-and-grafana-install`
-- Navigate to the directory: `cd prometheus-and-grafana-install`
+- Navigate to the directory: `cd service-discovery `
 - Run `bash install-prometheus.sh` to install Prometheus
 
 ### Grafana Installation and Configuration
 
 - SSH to Grafana server
 - Clone the same repo: `git clone https://github.com/EngineerChris/prometheus-and-grafana-install`
-- Navigate to the directory: `cd prometheus-and-grafana-install`
+- Navigate to the directory: `cd prometheus-and-grafana-install` (MAY NOT BE NECESSARY)
 - Install Grafana: `bash install-grafana.sh`
 
 ### Target Server Installation and Configuration
@@ -54,7 +54,7 @@
 
 - SSH to the Target instance (Server1)
 - Clone the project repo: `git clone https://github.com/EngineerChris/prometheus-and-grafana-install`
-- Navigate to the directory: `cd prometheus-and-grafana-install`
+- Navigate to the directory: `cd prometheus-and-grafana-install`  (MAY NOT BE NECESSARY)
 - Install Node Exporter: `bash install-node-exporter.sh`
 
 ## Check Access to Servers UI
@@ -65,7 +65,7 @@
   - Web-Server1: `http://<web-server1-ip>:9100`
   - Web-Server2: `http://<web-server2-ip>:9100`
 
-## Understanding Prometheus Server UI
+## Navigating Prometheus Server UI
 
 - New UI: Use to run PromQL queries.
 - Graph: Visualize metrics (Grafana provides a more robust solution).
@@ -75,7 +75,13 @@
 - GrafanaServerIP:3000
 - Sign-in: admin/admin
 
-## Setting Up Data Source (Prometheus)
+
+## Grafana UI Set up 
+To see any visualizations in Grafana, there is a need to set up two things 
+- Data Source 
+- Dash Board for Visualization 
+
+### Setting Up Data Source (Prometheus)
 
 - Go to Settings (gear icon)
 - Navigate to Data Sources
@@ -85,13 +91,22 @@
   - Provide the Prometheus URL: `http://<PromServerIP>:9090`
 
 ## Setting Up Data Dashboard Visualization
+There are two methods to populate Grafana Data Dashboard: 
+1. Using Dashboard ID (may sometimes not work) 
+2. Download Dashboard JSON File and Upload (the method used in this project) 
+   - Download and Upload Dashboard JSON File: Click to download: Dashboard JSON File 
+   - Upload the Dashboard File and Connect to Prometheus Data Source: 
+      - Hover over the + sign on the left panel 
+      - Select Import 
+      - Click Upload JSON File and choose the downloaded file (1860_rev25.json) 
+      - Choose Prometheus as the Data Source 
+      - Click Import to complete the setup 
+This setup will connect your dashboard to the Prometheus data source for visualization. 
 
-- Download Dashboard JSON File
-- Upload the Dashboard File and Connect to Prometheus Data Source
 
 ## Stress the Webserver (Target Server)
 
-- SSH to webser1
+- SSH to webser1 (that has node exporter installed that Prometheus is scaping metrics )
 - Install stress tool: `sudo apt update && sudo apt-get install stress -y`
 - Run stress test: `stress --cpu 5 --timeout 360s`
 
